@@ -9,9 +9,9 @@ const greetings = {
 
 if (hour <= 12) {
   console.log(greetings.morning);
-} else if (hour > 12 && hour <= 18) {
+} else if (hour <= 18) {
   console.log(greetings.afternoon);
-} else if (hour > 18 && hour <= 21) {
+} else if (hour <= 21) {
   console.log(greetings.evening);
 } else {
   console.log(greetings.night);
