@@ -1,4 +1,5 @@
 const express = require("express");
+const { products } = require("./data");
 
 //invoke express
 const app = express();
@@ -8,6 +9,10 @@ app.use(express.static("./public"));
 
 app.get("/api/v1/test", (req, res) => {
   res.json({ message: "It worked!" });
+});
+
+app.get("/api/v1/products", (req, res) => {
+  res.json(products);
 });
 
 //handle page not found conditions
