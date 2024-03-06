@@ -6,6 +6,10 @@ const app = express();
 // setup static and middleware
 app.use(express.static("./public"));
 
+app.get("/api/v1/test", (req, res) => {
+  res.json({ message: "It worked!" });
+});
+
 //handle page not found conditions
 app.all("*", (req, res) => {
   res.status(404).send("resource not found");
