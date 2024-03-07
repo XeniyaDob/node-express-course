@@ -1,4 +1,4 @@
-const today = new Date().getHours();
+const hour = new Date().getHours();
 
 const greetings = {
   morning: "Good morning",
@@ -7,11 +7,11 @@ const greetings = {
   night: "Good night",
 };
 
-if (today <= 12) {
+if (hour <= 12) {
   console.log(greetings.morning);
-} else if (today > 12 && today <= 18) {
+} else if (hour <= 18) {
   console.log(greetings.afternoon);
-} else if (today > 18 && today <= 21) {
+} else if (hour <= 21) {
   console.log(greetings.evening);
 } else {
   console.log(greetings.night);
