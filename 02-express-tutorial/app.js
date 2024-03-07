@@ -15,6 +15,17 @@ app.get("/api/v1/products", (req, res) => {
   res.json(products);
 });
 
+app.get("/api/v1/products/:productID", (req, res) => {
+  const idToFind = parseInt(req.params.productID);
+  const product = products.find((p) => p.id === idToFind);
+
+  if (!product) {
+    return res.status(404).send({ message: "That product was not found." });
+  }
+
+  return res.json(product);
+});
+
 //handle page not found conditions
 app.all("*", (req, res) => {
   res.status(404).send("resource not found");
