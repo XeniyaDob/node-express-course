@@ -27,21 +27,27 @@ app.get("/api/v1/products/:productID", (req, res) => {
 });
 //search 
 app.get('/api/v1/query', (req, res) => {
-  const { search, limit } = req.query;
+  const { search, limit, regex } = req.query;
   let sortedProducts = [...products];
 
- if (search) {
-      sortedProducts = sortedProducts.filter(product => {
-          return product.name.toLowerCase().startsWith(search.toLowerCase());
-      });
-  }
-  if (limit) {
-      sortedProducts = sortedProducts.slice(0, Number(limit));
+  if (regex) {
+    const searchByRegex = new RegExp(regex, "i");
+    sortedProducts = sortedProducts.filter((product) =>
+      searchByRegex.test(product.name)
+    );
+  } else if (search) {
+    sortedProducts = sortedProducts.filter((product) => {
+      return product.name.toLowerCase().startsWith(search.toLowerCase());
+    });
   }
 
-  if(sortedProducts.length < 1) {
-      return res.status(200).json({ success: true, data: [] });
-  } 
+  if (limit) {
+    sortedProducts = sortedProducts.slice(0, Number(limit));
+  }
+
+  if (sortedProducts.length < 1) {
+    return res.status(200).json({ success: true, data: [] });
+  }
   res.status(200).json(sortedProducts);
 });
 
