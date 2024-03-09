@@ -27,7 +27,7 @@ app.get("/api/v1/products/:productID", (req, res) => {
 });
 //search 
 app.get('/api/v1/query', (req, res) => {
-  const { search, limit, regex } = req.query;
+  const { search, limit, regex, price } = req.query;
   let sortedProducts = [...products];
 
   if (regex) {
@@ -44,7 +44,9 @@ app.get('/api/v1/query', (req, res) => {
   if (limit) {
     sortedProducts = sortedProducts.slice(0, Number(limit));
   }
-
+  if (price) {
+    sortedProducts = sortedProducts.filter((product) => product.price >= price);
+  }
   if (sortedProducts.length < 1) {
     return res.status(200).json({ success: true, data: [] });
   }
