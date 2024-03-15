@@ -1,61 +1,27 @@
 const express = require("express");
-const { products } = require("./data");
-
-//invoke express
 const app = express();
 
-// setup static and middleware
-app.use(express.static("./public"));
+const logger = (req, res, next) => {
+  const method = req.method;
+  const url = req.url;
+  const today = new Date();
+  const date =
+    today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
+  const time =
+    today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+  const dateTime = date + " " + time;
 
-app.get("/api/v1/test", (req, res) => {
-  res.json({ message: "It worked!" });
+  console.log(method, url, dateTime);
+  next();
+};
+app.use(["/", "/about"], logger);
+
+app.get("/", (req, res) => {
+  res.send("Home");
 });
 
-app.get("/api/v1/products", (req, res) => {
-  res.json(products);
-});
-
-app.get("/api/v1/products/:productID", (req, res) => {
-  const idToFind = parseInt(req.params.productID);
-  const product = products.find((p) => p.id === idToFind);
-
-  if (!product) {
-    return res.status(404).send({ message: "That product was not found." });
-  }
-
-  return res.json(product);
-});
-//search 
-app.get('/api/v1/query', (req, res) => {
-  const { search, limit, regex, price } = req.query;
-  let sortedProducts = [...products];
-
-  if (regex) {
-    const searchByRegex = new RegExp(regex, "i");
-    sortedProducts = sortedProducts.filter((product) =>
-      searchByRegex.test(product.name)
-    );
-  } else if (search) {
-    sortedProducts = sortedProducts.filter((product) => {
-      return product.name.toLowerCase().startsWith(search.toLowerCase());
-    });
-  }
-
-  if (limit) {
-    sortedProducts = sortedProducts.slice(0, Number(limit));
-  }
-  if (price) {
-    sortedProducts = sortedProducts.filter((product) => product.price >= price);
-  }
-  if (sortedProducts.length < 1) {
-    return res.status(200).json({ success: true, data: [] });
-  }
-  res.status(200).json(sortedProducts);
-});
-
-//handle page not found conditions
-app.all("*", (req, res) => {
-  res.status(404).send("resource not found");
+app.get("/about", (req, res) => {
+  res.send("About");
 });
 
 app.listen(3000, () => {
