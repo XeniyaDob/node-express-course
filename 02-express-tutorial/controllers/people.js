@@ -23,6 +23,7 @@ const addPerson = (req, res) => {
       .status(400)
       .json({ success: false, message: "Please provide a name" });
   }
+  people.push({ id: people.length + 1, name: name });
   return res.status(201).json({ success: true, data: [...people] });
 };
 
