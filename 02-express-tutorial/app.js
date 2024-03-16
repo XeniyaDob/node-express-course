@@ -1,8 +1,7 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const app = express();
-const peopleRouter = require("./routes/people");
-const productsRouter = require("./routes/products");
+
 //static assets
 app.use(express.static("./methods-public"));
 
@@ -13,6 +12,11 @@ app.use(express.json());
 
 app.use(cookieParser());
 
+const authRouter = require("./routes/auth");
+const peopleRouter = require("./routes/people");
+const productsRouter = require("./routes/products");
+
+app.use("/", authRouter);
 app.use("/api/v1/people", peopleRouter);
 app.use("/api/v1", productsRouter);
 
