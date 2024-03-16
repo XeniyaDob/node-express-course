@@ -1,4 +1,5 @@
 const express = require("express");
+const cookieParser = require("cookie-parser");
 const app = express();
 const peopleRouter = require("./routes/people");
 const productsRouter = require("./routes/products");
@@ -9,6 +10,8 @@ app.use(express.static("./methods-public"));
 app.use(express.urlencoded({ extended: false }));
 //parse json
 app.use(express.json());
+
+app.use(cookieParser());
 
 app.use("/api/v1/people", peopleRouter);
 app.use("/api/v1", productsRouter);
