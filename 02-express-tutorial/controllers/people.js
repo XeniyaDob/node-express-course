@@ -46,9 +46,25 @@ const updatePerson = (req, res) => {
   return res.status(200).json({ success: true, data: newPeople });
 };
 
+const deletePerson = (req, res) => {
+  const person = people.find((person) => person.id === Number(req.params.id));
+  if (!person) {
+    return res
+      .status(400)
+      .json({ success: false, message: `No person with id ${req.params.id}` });
+  }
+
+  const newPeople = people.filter(
+    (person) => person.id !== Number(req.params.id)
+  );
+
+  return res.status(200).json({ success: true, data: newPeople });
+};
+
 module.exports = {
   getPeople,
   getPersonById,
   addPerson,
   updatePerson,
+  deletePerson,
 };
