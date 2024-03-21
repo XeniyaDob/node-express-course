@@ -1,0 +1,29 @@
+1. Quickly explain how middleware is used in an Express application.
+
+   Middleware in Express is essentially a series of function calls that get executed 
+   in the order they are added. Middleware functions have access to the request object 
+   (req), the response object (res), and the next function in the application’s 
+   request-response cycle. If a middleware function does not end the request-response cycle, 
+   it must call next() to pass control to the next middleware function. 
+   Otherwise, the request will be left hanging. Middleware functions can be used for various tasks 
+   such as logging, authentication, or handling errors.
+
+2. What does CRUD stand for?
+   
+   CRUD stands for Create, Read, Update, and Delete. 
+   These are the four basic functions of persistent storage. 
+   - Create is used to add new records, 
+   - Read is used to fetch existing records, 
+   - Update is used to modify existing records, 
+   - and Delete is used to remove records.
+
+3. You are careful to store your sensitive information in a .env file.
+   1. How do you get your app to access the information in the .env file?
+   
+    I am using the dotenv package to load the variables from the .env file into process.env. 
+    This allows my application to access these variables anywhere in your code. 
+
+   2. How do you protect the contents of the .env file so that it is not stored in your Github repository?
+
+   To prevent the .env file from being stored in my Github repository, I add it to my .gitignore file. 
+   This tells Git to ignore the file and not track it. 
