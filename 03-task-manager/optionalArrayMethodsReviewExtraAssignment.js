@@ -147,12 +147,53 @@ object.behavior()
 // changes to this file with your MR for week 3.
 
 const names = [
-  'Dimitry SantiAgo',
-  'Carlos d. Perez',
-  'tam  person',
-  'Mariana Gomez',
-  'Amy You'
+  "Dimitry SantiAgo",
+  "Carlos d. Perez",
+  "tam  person",
+  "Mariana Gomez",
+  "Amy You",
+  "Timothy      Cook",
+  "Nick_Masters",
+  "Timmy-Turner",
+  "Billy\nBob",
 ];
+// Create a new array with only each person's last name
+// match the format "<first> <last>"
+const validNames = names.filter((name) => name.split(" ").length === 2);
+//splitting each name by the space character and returning the last element of the resulting array
+const familyNames = validNames.map((familyName) => familyName.split(" ")[1]);
+console.log(
+  "CHALLENGE 1 - Create a new array with only each person's last name",
+  familyNames
+);
+
+// - Create a new array where everyone's name is converted to "Title Case"
+//replace all occurrences of multiple spaces with a single space and removes whitespace from both ends of a string
+const cleanedNames = names.map((name) => name.replace(/\s+/g, " ").trim());
+const titleCasedNames = cleanedNames.map((name) =>
+  /*splitting each name by the space character,
+  mapping over the resulting array of words, and converting the first character of each word to uppercase and the rest to lowercase
+  joining back together into a string*/
+  name
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ")
+);
+
+console.log(
+  "CHALLENGE 2 - Create a new array where everyone's name is converted to Title Case",
+  titleCasedNames
+);
+//Last Challenge
+// Remove people whose last name ends with z
+const finalNames = validNames.filter(
+  (name) => !name.split(" ")[1].endsWith("z")
+);
+
+// Write a message asking them to sign up
+finalNames.forEach((name) =>
+  console.log(`LAST CHALLENGE! ${name}, please sign up!`)
+);
 
 ///////////////////////////////////////////////////////////////////////////////
 //// put your answers above if you wish to do the challenges on your own //////
