@@ -50,7 +50,10 @@ app.get('/api/v1/query', (req, res) => {
   if (sortedProducts.length < 1) {
     return res.status(200).json({ success: true, data: [] });
   }
-  res.status(200).json(sortedProducts);
+  res.status(200).json({
+    success: true,
+    data: sortedProducts,
+  });
 });
 
 //handle page not found conditions
