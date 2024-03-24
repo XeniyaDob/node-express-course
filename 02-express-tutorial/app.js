@@ -28,31 +28,33 @@ app.get("/api/v1/products/:productID", (req, res) => {
 //search 
 app.get('/api/v1/query', (req, res) => {
   const { search, limit, regex, price } = req.query;
-  let sortedProducts = [...products];
+  let filteredProducts = [...products];
 
   if (regex) {
     const searchByRegex = new RegExp(regex, "i");
-    sortedProducts = sortedProducts.filter((product) =>
+    filteredProducts = filteredProducts.filter((product) =>
       searchByRegex.test(product.name)
     );
   } else if (search) {
-    sortedProducts = sortedProducts.filter((product) => {
+    filteredProducts = filteredProducts.filter((product) => {
       return product.name.toLowerCase().startsWith(search.toLowerCase());
     });
   }
 
   if (limit) {
-    sortedProducts = sortedProducts.slice(0, Number(limit));
+    filteredProducts = filteredProducts.slice(0, Number(limit));
   }
   if (price) {
-    sortedProducts = sortedProducts.filter((product) => product.price >= price);
+    filteredProducts = filteredProducts.filter(
+      (product) => product.price >= price
+    );
   }
-  if (sortedProducts.length < 1) {
+  if (filteredProducts.length < 1) {
     return res.status(200).json({ success: true, data: [] });
   }
   res.status(200).json({
     success: true,
-    data: sortedProducts,
+    data: filteredProducts,
   });
 });
 
