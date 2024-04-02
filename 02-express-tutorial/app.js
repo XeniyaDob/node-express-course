@@ -1,66 +1,31 @@
 const express = require("express");
-const { products } = require("./data");
-
-//invoke express
+const cookieParser = require("cookie-parser");
+const logger = require("./middleware/logger");
 const app = express();
 
-// setup static and middleware
-app.use(express.static("./public"));
+// Use the logger middleware
+app.use(logger);
 
-app.get("/api/v1/test", (req, res) => {
-  res.json({ message: "It worked!" });
-});
+//static assets
+app.use(express.static("./methods-public"));
 
-app.get("/api/v1/products", (req, res) => {
-  res.json(products);
-});
+//parse form data
+app.use(express.urlencoded({ extended: false }));
+//parse json
+app.use(express.json());
 
-app.get("/api/v1/products/:productID", (req, res) => {
-  const idToFind = parseInt(req.params.productID);
-  const product = products.find((p) => p.id === idToFind);
+app.use(cookieParser());
 
-  if (!product) {
-    return res.status(404).send({ message: "That product was not found." });
-  }
+const authRouter = require("./routes/auth");
+const peopleRouter = require("./routes/people");
+const productsRouter = require("./routes/products");
 
-  return res.json(product);
-});
-//search 
-app.get('/api/v1/query', (req, res) => {
-  const { search, limit, regex, price } = req.query;
-  let filteredProducts = [...products];
+app.use("/", authRouter);
+app.use("/api/v1/people", peopleRouter);
+app.use("/api/v1", productsRouter);
 
-  if (regex) {
-    const searchByRegex = new RegExp(regex, "i");
-    filteredProducts = filteredProducts.filter((product) =>
-      searchByRegex.test(product.name)
-    );
-  } else if (search) {
-    filteredProducts = filteredProducts.filter((product) => {
-      return product.name.toLowerCase().startsWith(search.toLowerCase());
-    });
-  }
-
-  if (limit) {
-    filteredProducts = filteredProducts.slice(0, Number(limit));
-  }
-  if (price) {
-    filteredProducts = filteredProducts.filter(
-      (product) => product.price >= price
-    );
-  }
-  if (filteredProducts.length < 1) {
-    return res.status(200).json({ success: true, data: [] });
-  }
-  res.status(200).json({
-    success: true,
-    data: filteredProducts,
-  });
-});
-
-//handle page not found conditions
 app.all("*", (req, res) => {
-  res.status(404).send("resource not found");
+  res.status(404).send("<h1>resource not found</h1>");
 });
 
 app.listen(3000, () => {
