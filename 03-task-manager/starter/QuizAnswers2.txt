@@ -1,0 +1,19 @@
+1.In this lesson, you created a middleware function called asyncWrapper. Why?
+ 
+    The asyncWrapper refactoring will enhance the maintainability of the code and make it easier 
+    to handle different types of errors in the future.
+    
+    This refactoring prevents the repetition of code, adhering to the DRY principle. 
+
+2. 
+
+const { createCustomError } = require("../errors/custom-error");
+
+  const getTask = asyncWrapper(async (req, res, next) => {
+  const { id: taskID } = req.params;
+  const task = await Task.findOne({ _id: taskID });
+  if (!task) {
+    return next(createCustomError(`No task with id : ${taskID}`, 404));
+  }
+  res.status(200).json({ task });
+});
