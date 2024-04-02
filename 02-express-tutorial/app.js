@@ -1,6 +1,10 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
+const logger = require("./middleware/logger");
 const app = express();
+
+// Use the logger middleware
+app.use(logger);
 
 //static assets
 app.use(express.static("./methods-public"));
