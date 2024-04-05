@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const CustomAPIError = require("../errors/custom-error");
+const { BadRequestError } = require("../errors");
 
 // check username, password in post(login) request
 // if exist create new JWT
@@ -14,7 +14,7 @@ const login = async (req, res) => {
 
   //3 option: check in the controller
   if (!username || !password) {
-    throw new CustomAPIError("Please provide email and password", 400);
+    throw new BadRequestError("Please provide email and password");
   }
   //Just for Demo, normally provided by DB!!!
   const id = new Date().getDate();
@@ -28,13 +28,13 @@ const login = async (req, res) => {
 };
 
 const dashboard = async (req, res) => {
-    console.log(req.user);
-    const luckyNumber = Math.floor(Math.random() * 100);
+  //console.log(req.user);
+  const luckyNumber = Math.floor(Math.random() * 100);
 
-    res.status(200).json({
-      msg: `Hello, ${req.user.username}`,
-      secret: `Here is your authorized data, and your lucky number is ${luckyNumber}`,
-    });
+  res.status(200).json({
+    msg: `Hello, ${req.user.username}`,
+    secret: `Here is your authorized data, and your lucky number is ${luckyNumber}`,
+  });
 };
 
 module.exports = { login, dashboard };
